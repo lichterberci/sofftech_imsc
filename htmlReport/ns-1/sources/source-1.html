@@ -1,0 +1,195 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=windows-1250"> 
+  <title>Coverage Report > DijkstraPathFinder1</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">imsc.softtech</a>
+</div>
+
+<h1>Coverage Summary for Class: DijkstraPathFinder1 (imsc.softtech)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">DijkstraPathFinder1</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/25)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">DijkstraPathFinder1$Node</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/2)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/4)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>Total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/5)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    0%
+  </span>
+  <span class="absValue">
+    (0/29)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package imsc.softtech;
+&nbsp;
+&nbsp;import java.util.*;
+&nbsp;
+&nbsp;public class DijkstraPathFinder1 implements PathFinder {
+&nbsp;    private final Map&lt;Integer, Map&lt;Integer, Integer&gt;&gt; graph;
+&nbsp;
+<b class="nc">&nbsp;    public DijkstraPathFinder1() {</b>
+<b class="nc">&nbsp;        this.graph = new HashMap&lt;&gt;();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public void addEdge(int from, int to, int weight) {
+<b class="nc">&nbsp;        if (weight != 0 &amp;&amp; weight != 1) {</b>
+<b class="nc">&nbsp;            throw new IllegalArgumentException(&quot;Edge weight must be either 0 or 1.&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        graph.computeIfAbsent(from, k -&gt; new HashMap&lt;&gt;());</b>
+<b class="nc">&nbsp;        if (graph.get(from).containsKey(to)) {</b>
+<b class="nc">&nbsp;            throw new IllegalStateException(&quot;Edge already present in the graph.&quot;);</b>
+&nbsp;        }
+&nbsp;
+<b class="nc">&nbsp;        graph.get(from).put(to, weight);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Override
+&nbsp;    public int getShortestPathLength(int source, int target) {
+<b class="nc">&nbsp;        Map&lt;Integer, Integer&gt; distance = new HashMap&lt;&gt;();</b>
+<b class="nc">&nbsp;        PriorityQueue&lt;Node&gt; priorityQueue = new PriorityQueue&lt;&gt;(Comparator.comparingInt(distance::get));</b>
+&nbsp;
+<b class="nc">&nbsp;        distance.put(source, 0);</b>
+<b class="nc">&nbsp;        priorityQueue.add(new Node(source, 0));</b>
+&nbsp;
+<b class="nc">&nbsp;        while (!priorityQueue.isEmpty()) {</b>
+<b class="nc">&nbsp;            int current = priorityQueue.poll().vertex;</b>
+&nbsp;
+<b class="nc">&nbsp;            if (current == target) {</b>
+<b class="nc">&nbsp;                return distance.get(current);</b>
+&nbsp;            }
+&nbsp;
+<b class="nc">&nbsp;            if (graph.containsKey(current)) {</b>
+<b class="nc">&nbsp;                for (int neighbor : graph.get(current).keySet()) {</b>
+<b class="nc">&nbsp;                    int newDistance = distance.get(current) + graph.get(current).get(neighbor);</b>
+&nbsp;
+<b class="nc">&nbsp;                    if (!distance.containsKey(neighbor) || newDistance &lt; distance.get(neighbor)) {</b>
+<b class="nc">&nbsp;                        distance.put(neighbor, newDistance);</b>
+<b class="nc">&nbsp;                        priorityQueue.add(new Node(neighbor, newDistance));</b>
+&nbsp;                    }
+<b class="nc">&nbsp;                }</b>
+&nbsp;            }
+<b class="nc">&nbsp;        }</b>
+&nbsp;
+<b class="nc">&nbsp;        return -1; // No path found</b>
+&nbsp;    }
+&nbsp;
+<b class="nc">&nbsp;    private static class Node {</b>
+&nbsp;        private final int vertex;
+&nbsp;        private final int distance;
+&nbsp;
+<b class="nc">&nbsp;        public Node(int vertex, int distance) {</b>
+<b class="nc">&nbsp;            this.vertex = vertex;</b>
+<b class="nc">&nbsp;            this.distance = distance;</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2023-12-16 15:23</div>
+</div>
+</body>
+</html>
