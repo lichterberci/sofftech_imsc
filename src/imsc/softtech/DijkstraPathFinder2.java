@@ -1,5 +1,4 @@
 package imsc.softtech;
-
 import java.util.*;
 
 public class DijkstraPathFinder2 implements PathFinder {
@@ -16,10 +15,16 @@ public class DijkstraPathFinder2 implements PathFinder {
         }
 
         graph.computeIfAbsent(from, k -> new HashMap<>()).put(to, weight);
+        graph.putIfAbsent(to, new HashMap<>()); // Ensure the 'to' node exists in the graph
+        graph.putIfAbsent(from, new HashMap<>()); // Ensure the 'from' node exists in the graph
     }
 
     @Override
     public int getShortestPathLength(int source, int target) {
+        if (!graph.containsKey(source) || !graph.containsKey(target)) {
+            return -1; // Source or target node not present in the graph
+        }
+
         Map<Integer, Integer> distances = new HashMap<>();
         PriorityQueue<Node> minHeap = new PriorityQueue<>(Comparator.comparingInt(distances::get));
         Set<Integer> visited = new HashSet<>();
@@ -43,7 +48,7 @@ public class DijkstraPathFinder2 implements PathFinder {
 
             for (Map.Entry<Integer, Integer> neighborEntry : graph.getOrDefault(current, Collections.emptyMap()).entrySet()) {
                 int neighbor = neighborEntry.getKey();
-                int newDistance = distances.get(current) + neighborEntry.getValue();
+                int newDistance = distances.getOrDefault(current, 0) + neighborEntry.getValue();
 
                 if (!distances.containsKey(neighbor) || newDistance < distances.get(neighbor)) {
                     distances.put(neighbor, newDistance);

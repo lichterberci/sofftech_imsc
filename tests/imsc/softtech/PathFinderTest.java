@@ -9,7 +9,7 @@ class PathFinderTest {
 
     @BeforeEach
     void beforeEach() {
-        pathFinder = new DijkstraPathFinder2();
+        pathFinder = new DijkstraPathFinder3();
     }
 
     @Test

@@ -21,6 +21,7 @@ public class DijkstraPathFinder1 implements PathFinder {
         }
 
         graph.get(from).put(to, weight);
+        graph.computeIfAbsent(to, k -> new HashMap<>()); // Ensure target node exists
     }
 
     @Override
@@ -40,9 +41,13 @@ public class DijkstraPathFinder1 implements PathFinder {
 
             if (graph.containsKey(current)) {
                 for (int neighbor : graph.get(current).keySet()) {
+                    if (!distance.containsKey(neighbor)) {
+                        distance.put(neighbor, Integer.MAX_VALUE); // Initialize distance to infinity
+                    }
+
                     int newDistance = distance.get(current) + graph.get(current).get(neighbor);
 
-                    if (!distance.containsKey(neighbor) || newDistance < distance.get(neighbor)) {
+                    if (newDistance < distance.get(neighbor)) {
                         distance.put(neighbor, newDistance);
                         priorityQueue.add(new Node(neighbor, newDistance));
                     }

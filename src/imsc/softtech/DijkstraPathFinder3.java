@@ -16,7 +16,9 @@ class DijkstraPathFinder3 implements PathFinder {
             throw new IllegalArgumentException("Edge weight must be either 0 or 1");
         }
 
-        graph.computeIfAbsent(from, k -> new HashMap<>()).put(to, weight);
+        if (graph.computeIfAbsent(from, k -> new HashMap<>()).put(to, weight) != null) {
+            throw new IllegalStateException("Edge already present in the graph");
+        }
     }
 
     @Override
@@ -52,5 +54,16 @@ class DijkstraPathFinder3 implements PathFinder {
         }
 
         return -1; // No path found
+    }
+
+    public static void main(String[] args) {
+        DijkstraPathFinder3 pathFinder = new DijkstraPathFinder3();
+
+        pathFinder.addEdge(0, 1, 1);
+        pathFinder.addEdge(1, 2, 1);
+        pathFinder.addEdge(0, 2, 0);
+
+        int shortestPathLength = pathFinder.getShortestPathLength(0, 2);
+        System.out.println("Shortest path length: " + shortestPathLength);
     }
 }
